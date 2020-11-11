@@ -28,35 +28,35 @@ out vec4 outColor;
 
 void main() {
     vec3 L = normalize(uLightDir);
-	vec3 N = normalize(vNormal);
+    vec3 N = normalize(vNormal);
 
     vec3 ambient = uAmbientLight * uAmbientMaterial;
-    
+
     float diffuseIntensity = max(dot(N, -L), 0.0);
     vec3 diffuse = diffuseIntensity * uDiffuseLight * uDiffuseMaterial;
-       
+
     //Calculo do componente especular
-	float specularIntensity = 0.0;
-	if (uSpecularPower > 0.0) {
-		vec3 V = normalize(vViewPath);
-		vec3 R = reflect(L, N);
-		specularIntensity = pow(max(dot(R, V), 0.0), uSpecularPower);
-	}
+    float specularIntensity = 0.0;
+    if (uSpecularPower > 0.0) {
+        vec3 V = normalize(vViewPath);
+        vec3 R = reflect(L, N);
+        specularIntensity = pow(max(dot(R, V), 0.0), uSpecularPower);
+    }
     vec3 specular = specularIntensity * uSpecularLight * uSpecularMaterial;
 
     float blendFactor = clamp((vDepth - 0.99) * 100.0, 0.0, 1.0);
 
     vec2 farCoord = vTexCoord * 10.0;
     vec4 texelFar = texture(uTex0, farCoord) * vTexWeight.x +
-                    texture(uTex1, farCoord) * vTexWeight.y +
-                    texture(uTex2, farCoord) * vTexWeight.z +
-                    texture(uTex3, farCoord) * vTexWeight.w;
+    texture(uTex1, farCoord) * vTexWeight.y +
+    texture(uTex2, farCoord) * vTexWeight.z +
+    texture(uTex3, farCoord) * vTexWeight.w;
 
     vec2 nearCoord = vTexCoord * 50.0;
     vec4 texelNear = texture(uTex0, nearCoord) * vTexWeight.x +
-                     texture(uTex1, nearCoord) * vTexWeight.y +
-                     texture(uTex2, nearCoord) * vTexWeight.z +
-                     texture(uTex3, nearCoord) * vTexWeight.w;
+    texture(uTex1, nearCoord) * vTexWeight.y +
+    texture(uTex2, nearCoord) * vTexWeight.z +
+    texture(uTex3, nearCoord) * vTexWeight.w;
 
     vec4 texel = mix(texelNear, texelFar, blendFactor);
 
