@@ -25,10 +25,7 @@ void main() {
     vViewPath = uCameraPos - worldPos.xyz;
     vTexCoord = aTexCoord;
     vDepth = gl_Position.z / gl_Position.w;
-    float t = aTexWeight.x
-    + aTexWeight.y
-    + aTexWeight.z
-    + aTexWeight.w;
-
-    vTexWeight = aTexWeight / t;
+    
+    float sum = aTexWeight.x + aTexWeight.y + aTexWeight.z + aTexWeight.w;
+    vTexWeight = aTexWeight / sum;
 }
